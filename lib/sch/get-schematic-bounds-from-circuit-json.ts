@@ -15,7 +15,7 @@ import {
 } from "lib/utils/net-label-utils"
 import { estimateTextWidth } from "./estimate-text-width"
 import { getSchematicSymbolTextBounds } from "./get-schematic-symbol-text-bounds"
-import { getTableDimensions } from "./get-table-dimensions"
+import { getTableDimensions, getTableTopLeft } from "./get-table-dimensions"
 import { getSchematicSheetLayout } from "./schematic-sheet-utils"
 
 interface Bounds {
@@ -186,24 +186,11 @@ export function getSchematicBoundsFromCircuitJson(
       )
       const totalWidth = column_widths.reduce((a, b) => a + b, 0)
       const totalHeight = row_heights.reduce((a, b) => a + b, 0)
-      const anchor = item.anchor ?? "center"
-
-      let topLeftX = item.anchor_position.x
-      let topLeftY = item.anchor_position.y
-
-      // Horizontal alignment
-      if (anchor.includes("center")) {
-        topLeftX -= totalWidth / 2
-      } else if (anchor.includes("right")) {
-        topLeftX -= totalWidth
-      }
-
-      // Vertical alignment
-      if (anchor.includes("center")) {
-        topLeftY += totalHeight / 2
-      } else if (anchor.includes("bottom")) {
-        topLeftY += totalHeight
-      }
+      const { x: topLeftX, y: topLeftY } = getTableTopLeft(
+        item,
+        totalWidth,
+        totalHeight,
+      )
 
       const centerX = topLeftX + totalWidth / 2
       const centerY = topLeftY - totalHeight / 2

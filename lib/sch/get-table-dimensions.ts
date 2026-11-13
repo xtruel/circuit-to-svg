@@ -119,3 +119,33 @@ export const getTableDimensions = (
 
   return { column_widths, row_heights }
 }
+
+/**
+ * Returns the real-space top-left corner of a schematic table given its
+ * nine-point anchor (e.g. "top_center", "center_left").
+ */
+export const getTableTopLeft = (
+  schematicTable: SchematicTable,
+  totalWidth: number,
+  totalHeight: number,
+) => {
+  const anchor = schematicTable.anchor ?? "center"
+  let x = schematicTable.anchor_position.x
+  let y = schematicTable.anchor_position.y
+
+  // Horizontal alignment
+  if (anchor === "center" || anchor.endsWith("_center")) {
+    x -= totalWidth / 2
+  } else if (anchor.endsWith("_right")) {
+    x -= totalWidth
+  }
+
+  // Vertical alignment
+  if (anchor === "center" || anchor.startsWith("center_")) {
+    y += totalHeight / 2
+  } else if (anchor.startsWith("bottom_")) {
+    y += totalHeight
+  }
+
+  return { x, y }
+}
