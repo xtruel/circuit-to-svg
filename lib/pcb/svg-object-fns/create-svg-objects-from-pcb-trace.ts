@@ -105,9 +105,7 @@ export function createSvgObjectsFromPcbTrace(
     )
     if (!polygon.length) continue
     const color = showSolderMask
-      ? colorMap.soldermaskWithCopperUnderneath[
-          point.layer as keyof typeof colorMap.soldermaskWithCopperUnderneath
-        ]
+      ? getTraceSoldermaskColor(point.layer, colorMap)
       : layerNameToColor(point.layer, colorMap)
     svgObjects.push({
       name: "path",
@@ -140,10 +138,7 @@ export function createSvgObjectsFromPcbTrace(
       if (!d) continue
 
       const copperColor = layerNameToColor(layer, colorMap)
-      const maskColor =
-        colorMap.soldermaskWithCopperUnderneath[
-          layer as keyof typeof colorMap.soldermaskWithCopperUnderneath
-        ]
+      const maskColor = getTraceSoldermaskColor(layer, colorMap)
 
       svgObjects.push({
         name: "path",
@@ -172,10 +167,7 @@ export function createSvgObjectsFromPcbTrace(
       const layer = segment.layer
 
       const copperColor = layerNameToColor(layer, colorMap)
-      const maskColor =
-        colorMap.soldermaskWithCopperUnderneath[
-          layer as keyof typeof colorMap.soldermaskWithCopperUnderneath
-        ]
+      const maskColor = getTraceSoldermaskColor(layer, colorMap)
 
       const width = segment.width
         ? (segment.width * Math.abs(transform.a)).toString()
@@ -244,6 +236,19 @@ export function createSvgObjectsFromPcbTrace(
   }
 
   return svgObjects
+}
+
+/**
+ * Soldermask colors only exist for the outer faces. Inner-layer copper is seen
+ * through the top mask, matching how inner-layer copper pours are tinted.
+ */
+function getTraceSoldermaskColor(
+  layer: LayerRef,
+  colorMap: PcbContext["colorMap"],
+): string {
+  return colorMap.soldermaskWithCopperUnderneath[
+    layer === "bottom" ? "bottom" : "top"
+  ]
 }
 
 function getConnectedTraceSegmentGroups(
