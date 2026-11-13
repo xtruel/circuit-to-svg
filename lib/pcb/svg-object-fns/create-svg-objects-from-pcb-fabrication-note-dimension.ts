@@ -343,7 +343,7 @@ export function createSvgObjectsFromPcbFabricationNoteDimension(
     class: "pcb-fabrication-note-dimension",
     "data-type": "pcb_fabrication_note_dimension",
     "data-pcb-fabrication-note-dimension-id": pcb_fabrication_note_dimension_id,
-    "data-pcb-layer": layer ?? "overlay",
+    "data-pcb-layer": "overlay",
   }
 
   if (pcb_component_id !== undefined) {
