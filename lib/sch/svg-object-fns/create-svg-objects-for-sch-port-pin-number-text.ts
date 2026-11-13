@@ -4,7 +4,7 @@ import type {
   SchematicPort,
 } from "circuit-json"
 import type { SvgObject } from "lib/svg-object"
-import { colorMap } from "lib/utils/colors"
+import type { ColorMap } from "lib/utils/colors"
 import { getSchScreenFontSize } from "lib/utils/get-sch-font-size"
 import { getUnitVectorFromOutsideToEdge } from "lib/utils/get-unit-vector-from-outside-to-edge"
 import { applyToPoint, type Matrix } from "transformation-matrix"
@@ -14,9 +14,10 @@ export const createSvgObjectsForSchPortPinNumberText = (params: {
   schComponent: SchematicComponent
   transform: Matrix
   circuitJson: AnyCircuitElement[]
+  colorMap: ColorMap
 }): SvgObject[] => {
   const svgObjects: SvgObject[] = []
-  const { schPort, schComponent, transform, circuitJson } = params
+  const { schPort, schComponent, transform, circuitJson, colorMap } = params
 
   const realPinNumberPos = {
     x: schPort.center.x,

@@ -1,4 +1,4 @@
-import { colorMap } from "lib/utils/colors"
+import type { ColorMap } from "lib/utils/colors"
 import type { INode as SvgObject } from "svgson"
 import { applyToPoint, type Matrix } from "transformation-matrix"
 
@@ -10,10 +10,12 @@ export function drawSchematicGrid(params: {
     maxY: number
   }
   transform: Matrix
+  colorMap: ColorMap
   cellSize?: number
   labelCells?: boolean
 }): SvgObject {
   const { minX, minY, maxX, maxY } = params.bounds
+  const { colorMap } = params
   const cellSize = params.cellSize ?? 1
   const labelCells = params.labelCells ?? false
   const gridLines: any[] = []

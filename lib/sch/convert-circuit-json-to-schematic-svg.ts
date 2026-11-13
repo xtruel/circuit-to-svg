@@ -179,7 +179,12 @@ export function convertCircuitJsonToSchematicSvg(
   if (options?.grid) {
     const gridConfig = typeof options.grid === "object" ? options.grid : {}
     svgChildren.push(
-      drawSchematicGrid({ bounds: realBounds, transform, ...gridConfig }),
+      drawSchematicGrid({
+        bounds: realBounds,
+        transform,
+        colorMap,
+        ...gridConfig,
+      }),
     )
   }
 
@@ -416,6 +421,7 @@ export function convertCircuitJsonToSchematicSvg(
       drawSchematicLabeledPoints({
         points: options.labeledPoints,
         transform,
+        colorMap,
       }),
     )
   }

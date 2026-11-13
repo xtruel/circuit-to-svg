@@ -4,6 +4,7 @@ import type {
   SchematicPort,
 } from "circuit-json"
 import type { SvgObject } from "lib/svg-object"
+import type { ColorMap } from "lib/utils/colors"
 import { applyToPoint, type Matrix } from "transformation-matrix"
 import { su } from "@tscircuit/circuit-json-util"
 import { createSvgObjectsForSchPortBoxLine } from "./create-svg-objects-for-sch-port-box-line"
@@ -15,13 +16,19 @@ export const createSvgObjectsFromSchPortOnBox = (params: {
   schComponent: SchematicComponent
   transform: Matrix
   circuitJson: AnyCircuitElement[]
+  colorMap: ColorMap
 }): SvgObject[] => {
   const svgObjects: SvgObject[] = []
   const { schPort, schComponent, transform, circuitJson } = params
 
   svgObjects.push(...createSvgObjectsForSchPortBoxLine(params))
   svgObjects.push(...createSvgObjectsForSchPortPinNumberText(params))
-  svgObjects.push(...createSvgObjectsForSchPortPinLabel(params))
+  svgObjects.push(
+    ...createSvgObjectsForSchPortPinLabel({
+      ...params,
+      labelColor: params.colorMap.schematic.pin_number,
+    }),
+  )
 
   return svgObjects
 }

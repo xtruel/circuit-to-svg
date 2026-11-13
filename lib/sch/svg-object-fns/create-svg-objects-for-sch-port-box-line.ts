@@ -8,7 +8,7 @@ import { applyToPoint, type Matrix } from "transformation-matrix"
 import { su } from "@tscircuit/circuit-json-util"
 import { isSourcePortConnected } from "lib/utils/is-source-port-connected"
 import { getSchStrokeSize } from "lib/utils/get-sch-stroke-size"
-import { colorMap } from "lib/utils/colors"
+import type { ColorMap } from "lib/utils/colors"
 
 const PIN_CIRCLE_RADIUS_MM = 0.02
 
@@ -52,11 +52,13 @@ export const createSvgObjectsForSchPortBoxLine = ({
   schComponent,
   transform,
   circuitJson,
+  colorMap,
 }: {
   schPort: SchematicPort
   schComponent: SchematicComponent
   transform: Matrix
   circuitJson: AnyCircuitElement[]
+  colorMap: ColorMap
 }): SvgObject[] => {
   const svgObjects: SvgObject[] = []
 
